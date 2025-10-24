@@ -1,6 +1,8 @@
 package com.Calculator.CalculatorFunctions;
 import java.util.Scanner;
 
+
+
 public class DecimalToBinary {
     // Constante para validación hexadecimal
     private static final String HEX_REGEX = "^[0-9A-F]+(\\.[0-9A-F]+)?$";

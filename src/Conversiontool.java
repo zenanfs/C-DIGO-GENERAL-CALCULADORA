@@ -1,13 +1,14 @@
 package com.Calculator;
 import com.Calculator.CalculatorFunctions.DecimalToBinary;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Conversiontool{
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcion;
-
+        ArrayList<Integer> aBorrar = new ArrayList<>();
+        HistorialConv historial = new HistorialConv();
         do {
             System.out.println("=============================================");
             System.out.println("           CALCULADORA DE CONVERSIÓN         ");
@@ -16,7 +17,8 @@ public class Conversiontool{
             System.out.println("2. Convertir decimal a hexadecimal");
             System.out.println("3. Convertir binario a decimal");
             System.out.println("4. Convertir hexadecimal a decimal");
-            System.out.println("5. Salir");
+            System.out.println("5. Mostrar historial de conversiones");
+            System.out.println("6. Salir");
             System.out.println("=============================================");
             System.out.print("Seleccione una opción: ");
 
@@ -26,7 +28,7 @@ public class Conversiontool{
                 scanner.next();
             }
             opcion = scanner.nextInt();
-
+            historial.opciones.add(opcion);
             switch (opcion) {
                 case 1:
                     // Decimal a Binario
@@ -38,6 +40,8 @@ public class Conversiontool{
                     int numeroDecimal = scanner.nextInt();
                     try {
                         String resultadoBinario = DecimalToBinary.convertirDecimalABinario(numeroDecimal);
+                        historial.numIngresados.add(String.valueOf(numeroDecimal));
+                        historial.numConvertidos.add(resultadoBinario);
                         System.out.printf("El número binario es: %s\n", resultadoBinario);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error: " + e.getMessage());
@@ -54,6 +58,8 @@ public class Conversiontool{
                     int numeroHex = scanner.nextInt();
                     try {
                         String resultadoHex = DecimalToBinary.decimalAHexRecursivo(numeroHex);
+                        historial.numIngresados.add(String.valueOf(numeroHex));
+                        historial.numConvertidos.add(resultadoHex);
                         System.out.printf("El número hexadecimal es: %s\n", resultadoHex);
                     } catch (IllegalArgumentException e) {
                         System.out.println("Error: " + e.getMessage());
@@ -67,6 +73,8 @@ public class Conversiontool{
                     String binario = scanner.nextLine();
                     try {
                         double resultadoDecimal = DecimalToBinary.binarioADecimal(binario);
+                        historial.numIngresados.add(binario);
+                        historial.numConvertidos.add(Double.toString(resultadoDecimal));
                         System.out.printf("El número decimal es: %.2f\n", resultadoDecimal);
                     } catch (NumberFormatException e) {
                         System.out.println("Error: " + e.getMessage());
@@ -80,6 +88,8 @@ public class Conversiontool{
                     String hexadecimal = scanner.nextLine().toUpperCase();
                     try {
                         double resultadoHexADecimal = DecimalToBinary.hexFlotanteADecimal(hexadecimal);
+                        historial.numIngresados.add(hexadecimal);
+                        historial.numConvertidos.add(Double.toString(resultadoHexADecimal));
                         System.out.printf("El número decimal es: %.6f\n", resultadoHexADecimal);
                     } catch (NumberFormatException e) {
                         System.out.println("Error: " + e.getMessage());
@@ -87,22 +97,28 @@ public class Conversiontool{
                     break;
 
                 case 5:
+                    aBorrar.add(5);
+                    historial.opciones.removeAll(aBorrar);
+                    historial.count = historial.numIngresados.size();
+                    System.out.println("Las transformaciones realizadas de la mas reciente a la más remota son: ");
+                    historial.imprimirResultados(historial.count, historial.opciones.get(historial.opciones.size()-1));
+                    break;
+                case 6:
                     System.out.println("Saliendo del programa...");
                     break;
-
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
                     break;
             }
 
             // Pausa antes de mostrar el menú nuevamente (solo si no es salir)
-            if (opcion != 5) {
+            if (opcion != 6) {
                 System.out.println("\nPresione Enter para continuar...");
                 scanner.nextLine(); // Consumir el newline pendiente
                 scanner.nextLine(); // Esperar Enter
             }
 
-        } while (opcion != 5);
+        } while (opcion != 6);
 
         scanner.close();
     }
